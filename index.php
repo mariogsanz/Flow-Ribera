@@ -33,7 +33,7 @@
                     <input type="file" name="import" id="import" hidden>
                     <label class="btn btn-success me-2" for="import"><i class="bi bi-upload"></i> Importar</label>
                 </form>
-                <a class="btn btn-primary ms-2" href="#"><i class="bi bi-download"></i> Exportar</a>
+                <a class="btn btn-primary ms-2" href="exportar.php"><i class="bi bi-download"></i> Exportar</a>
             </div>
         </div>
     </div>
