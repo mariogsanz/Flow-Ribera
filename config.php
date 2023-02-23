@@ -1,6 +1,12 @@
 <?php
 
-$conn = new mysqli('localhost','root','','ajax');
+$host = 'localhost';
+$user = 'root';
+$pass = 'root';
+$port = 33060;
+$dbname = 'flowribera';
+
+$conn = new mysqli($host,$user,$pass,$dbname,$port);
 
 if ($conn->connect_errno){
     die('Error connecting to database: ' . $conn->connect_errno);
