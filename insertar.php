@@ -12,12 +12,12 @@ if ($conn->connect_errno){
     die('Error connecting to flowribera');
 }
 
-$nombres=array('Nacho','Raul','Manuel','Alejandro','Gianina','Alberto','Ricardo','Eduardo','Alberto','Miguel Ángel','Iván','Álvaro','Germán','Mario','Mario','Olga','Nicolás');
+$nombres=array('Luis','Nacho','Raul','Manuel','Alejandro','Gianina','Alberto','Ricardo','Eduardo','Alberto','Miguel Ángel','Iván','Álvaro','Germán','Mario','Mario','Olga','Nicolás');
 
-$apellidos=array('Casado de la Rocha','Cespedes','de Castro Ramos','Díaz Élez','Dobre','Espinosa Hormigos','González Riesco','González Stéfani','Martín Lara','Mateos Hernández','Méndez Sánchez','Pascual Cárdenas','Sánchez García','Sanz González','Valdesoiro Gil','Valls Fernández','Villalba Quintanilla');
+$apellidos=array('Blanco Sosa', 'Casado de la Rocha','Cespedes','de Castro Ramos','Díaz Élez','Dobre','Espinosa Hormigos','González Riesco','González Stéfani','Martín Lara','Mateos Hernández','Méndez Sánchez','Pascual Cárdenas','Sánchez García','Sanz González','Valdesoiro Gil','Valls Fernández','Villalba Quintanilla');
 
 for ($i=0; $i<count($nombres); $i++) {
-    $sql = 'INSERT INTO alumnos (NOMBRE,APELLIDOS) VALUES ("'. $nombres[$i]. '","' . $apellidos[$i] . '")';
+    $sql = 'INSERT INTO matriculas (ALUMNO,APELLIDOS,NOMBRE,GRUPO) VALUES (' . $i+1 . ',"' . $apellidos[$i] . '","' . $nombres[$i] . '","ASIR");';
 
-    $conn->query($sql);
+    // $conn->query($sql);
 }
