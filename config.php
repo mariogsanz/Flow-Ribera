@@ -2,8 +2,8 @@
 
 $host = 'localhost';
 $user = 'root';
-$pass = 'root';
-$port = 33060;
+$pass = '';
+$port = 3306;
 $dbname = 'flowribera';
 
 $conn = new mysqli($host,$user,$pass,$dbname,$port);
