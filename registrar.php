@@ -1,7 +1,17 @@
-<?php
+<?php session_start();
+
 include 'config.php';
 
-$id = $_POST['id'];
+if (isset($_SESSION['id'])) {
+    $id = $_SESSION['id'];
+} else {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_SESSION['id'] = $_POST['id'];
+        $id = $_SESSION['id'];
+    } else {
+        header('Location: index.php');
+    }
+}
 
 $query = 'SELECT NOMBRE,APELLIDOS FROM alumnos WHERE ALUMNO = ' . $id;
 $alumno = $conn->query($query);
@@ -13,6 +23,8 @@ if ($alumno->num_rows > 0) {
 
     $nombreCompleto = $nombre . " " . $apellidos;
 }
+
+$errores = '';
 ?>
 
 <!DOCTYPE html>
@@ -33,15 +45,33 @@ if ($alumno->num_rows > 0) {
 
 <body>
     <div class="container-fluid d-flex flex-column align-items-center bg-info h-100 p-0">
-        <div class="container-fluid text-center p-2 bg-warning">
+        <div class="container-fluid text-center p-2 text-bg-warning">
             <h1 class="display-4"><?php echo $nombreCompleto; ?></h1>
         </div>
         <div class="container d-flex flex-column align-items-center mt-4">
-            <?php if (isset($_POST['registrar'])) : ?>
-            <p>Salida registrada</p>
-            <?php else : ?>
+            <?php if (isset($_POST['registrar'])) :
+                if (empty($_POST['responsable'])) :
+                    $errores .= '<li class="list-group-item">Deben recoger al alumno para que pueda salir del centro</li>';
+                endif;
+                if (empty($_POST['motivo'])) :
+                    $errores .= '<li class="list-group-item">Se debe registrar el motivo de la salida</li>';
+                endif;
+                if ($errores == '') : 
+                    $date = date('Y-m-d');
+                    echo $date;
+
+                    $query = 'INSERT INTO salidas VALUES (null,' . $id . ',"' . $date . '","' . $_POST['motivo'] . '","' . $_POST['responsable'] . '");';
+                    $insertado = $conn->query($query);
+
+                    if (!$insertado){
+                        $errores = '<li class="list-group-item">Ha ocurrido un error al registrar la salida</li>';
+                    } else {
+                        header('Location: alumno.php');
+                    }
+                endif;
+            endif;
+            ?>
             <form class="text-center" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-                <input type="text" name="id" id="id" hidden value="<?php echo $id; ?>">
                 <div class="form-floating">
                     <input type="text" name="responsable" id="responsable" class="form-control" placeholder="Responsable">
                     <label for="responsable">Responsable</label>
@@ -50,9 +80,15 @@ if ($alumno->num_rows > 0) {
                     <textarea onkeydown="textarea(this)" class="form-control" name="motivo" id="motivo" cols="30" placeholder="Motivo"></textarea>
                     <label for="motivo">Motivo</label>
                 </div>
-                <input type="submit" name="registrar" value="Registrar" class="btn btn-success mt-4">
+                <div>
+                    <input type="submit" name="registrar" value="Registrar" class="btn btn-success mt-4">
+                </div>
+                <?php if ($errores != '') : ?>
+                    <div class="text-bg-danger mt-4 p-2 rounded text-start">
+                        <?php echo $errores; ?>
+                    </div>
+                <?php endif; ?>
             </form>
-            <?php endif; ?>
         </div>
     </div>
 

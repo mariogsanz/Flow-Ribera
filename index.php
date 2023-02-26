@@ -1,3 +1,12 @@
+<?php session_start();
+
+if (isset($_SESSION['id'])){
+    session_unset();
+    session_destroy();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,7 +72,6 @@
 
         function sendData(data) {
             $('#id').val(data);
-
             $('#form').submit();
             $('#form').reset();
         }

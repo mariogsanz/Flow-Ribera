@@ -24,6 +24,9 @@
 // $sql = 'TRUNCATE TABLE matriculas;';
 // $conn->query($sql);
 
+// $sql = 'TRUNCATE TABLE salidas;';
+// $conn->query($sql);
+
 // $conn->query('SET FOREIGN_KEY_CHECKS=1;');
 
 // for ($i=0; $i<count($nombres); $i++) {

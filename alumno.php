@@ -1,7 +1,16 @@
-<?php
+<?php session_start();
 include 'config.php';
 
-$id = $_POST['id'];
+if (isset($_SESSION['id'])) {
+    $id = $_SESSION['id'];
+} else {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_SESSION['id'] = $_POST['id'];
+        $id = $_SESSION['id'];
+    } else {
+        header('Location: index.php');
+    }
+}
 
 $query = 'SELECT * FROM alumnos WHERE ALUMNO = ' . $id;
 $alumnos = $conn->query($query);
@@ -97,14 +106,13 @@ $salidas = $conn->query($query);
                 </tbody>
             </table>
             <form id="registrar" class="mt-4" action="registrar.php" method="post">
-                <input type="text" name="id" id="id" value="<?php echo $id; ?>" hidden>
                 <input class="btn btn-success" type="submit" value="Registrar Salida">
             </form>
 
-            <table class="table table-bordered mt-4">
+            <table class="table table-striped table-borderless mt-4">
                 <?php if ($salidas->num_rows > 0) : ?>
                     <thead>
-                        <tr>
+                        <tr class="table-active">
                             <th>Fecha</th>
                             <th>Motivo</th>
                             <th>Responsable</th>
