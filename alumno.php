@@ -85,21 +85,22 @@ $salidas = $conn->query($query);
             <table class="table table-borderless">
                 <tbody>
                     <tr>
+                        <td><b>Curso: </b><?php echo $estudios . " - <b>(". $curso . ")</b>"; ?></td>
                         <td><b>Sexo: </b><?php echo $sexo; ?></td>
                         <td><b>DNI: </b><?php echo $dni; ?></td>
-                        <td><b>NIE: </b><?php echo $nie; ?></td>
                     </tr>
                     <tr>
+                        <td><b>NIE: </b><?php echo $nie; ?></td>
                         <td><b>Fecha Nacimiento: </b><?php echo $fecha_nacimiento; ?></td>
                         <td><b>Domicilio: </b><?php echo $domicilio; ?></td>
-                        <td><b>Localidad: </b><?php echo $localidad; ?></td>
                     </tr>
                     <tr>
+                        <td><b>Localidad: </b><?php echo $localidad; ?></td>
                         <td><b>Provincia: </b><?php echo $provincia; ?></td>
                         <td><b>Teléfono: </b><?php echo $telefono; ?></td>
-                        <td><b>Código Postal: </b><?php echo $codigo_postal; ?></td>
                     </tr>
                     <tr>
+                        <td><b>Código Postal: </b><?php echo $codigo_postal; ?></td>
                         <td><b>País: </b><?php echo $pais; ?></td>
                         <td><b>Email: </b><?php echo $email_alumno; ?></td>
                     </tr>
