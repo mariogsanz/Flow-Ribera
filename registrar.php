@@ -58,7 +58,6 @@ $errores = '';
                 endif;
                 if ($errores == '') : 
                     $date = date('Y-m-d');
-                    echo $date;
 
                     $query = 'INSERT INTO salidas VALUES (null,' . $id . ',"' . $date . '","' . $_POST['motivo'] . '","' . $_POST['responsable'] . '");';
                     $insertado = $conn->query($query);

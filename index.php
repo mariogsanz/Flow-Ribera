@@ -38,11 +38,12 @@ if (isset($_SESSION['id'])){
                 </form>
             </div>
             <div class="container d-flex justify-content-center mt-4">
-                <form action="#" method="post" enctype="multipart/form-data">
+                <a class="btn btn-success" href="login.php">Iniciar Sesión</a>
+                <!-- <form action="#" method="post" enctype="multipart/form-data">
                     <input type="file" name="import" id="import" hidden>
                     <label class="btn btn-success me-2" for="import"><i class="bi bi-upload"></i> Importar</label>
-                </form>
-                <a class="btn btn-primary ms-2" href="exportar.php"><i class="bi bi-download"></i> Exportar</a>
+                </form> -->
+                <!-- <a class="btn btn-primary ms-2" href="exportar.php"><i class="bi bi-download"></i> Exportar</a> -->
             </div>
         </div>
     </div>
@@ -70,11 +71,11 @@ if (isset($_SESSION['id'])){
             });
         });
 
-        function sendData(data) {
-            $('#id').val(data);
-            $('#form').submit();
-            $('#form').reset();
-        }
+        // function sendData(data) {
+        //     $('#id').val(data);
+        //     $('#form').submit();
+        //     $('#form').reset();
+        // }
     </script>
 </body>
 

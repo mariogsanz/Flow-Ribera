@@ -1,16 +1,6 @@
 <?php
 
-// $host = 'localhost';
-// $port = '3306';
-// $user = 'root';
-// $pass = '';
-// $dbname = 'flowribera';
-
-// $conn = new mysqli($host, $user, $pass, $dbname, $port);
-
-// if ($conn->connect_errno){
-//     die('Error connecting to flowribera');
-// }
+include 'config.php';
 
 // $nombres=array('Luis','Nacho','Raul','Manuel','Alejandro','Gianina','Alberto','Ricardo','Eduardo','Alberto','Miguel Ángel','Iván','Álvaro','Germán','Mario','Mario','Olga','Nicolás');
 
@@ -36,3 +26,12 @@
 //     $sql = 'INSERT INTO matriculas (ALUMNO,APELLIDOS,NOMBRE,GRUPO,ESTUDIOS) VALUES ('. $i+1 .',"' . $apellidos[$i] . '","' . $nombres[$i] . '","ASIR","Administración de Sistemas Informáticos en Red");';
 //     $conn->query($sql);
 // }
+
+// $usuario = 'admin';
+// $pass = 'asir';
+
+// $pass = hash('sha512', $pass);
+
+// $sql = 'INSERT INTO usuarios VALUES ("' . $usuario . '","' . $pass . '")';
+
+// $conn->query($sql);
