@@ -1,4 +1,33 @@
+<?php session_start();
+include 'config.php';
 
+if (isset($_SESSION['usuario'])) {
+    header('Location: admin.php');
+}
+
+if (isset($_POST['submit'])) {
+    $errores = '';
+
+    if (empty($_POST['usuario']) || empty($_POST['pass'])) {
+        $errores = '<li class="list-group-item">Rellena los campos correctamente</li>';
+    } else {
+        $usuario = filter_var(htmlspecialchars($_POST['usuario']), FILTER_SANITIZE_SPECIAL_CHARS);
+        $pass = $_POST['pass'];
+        $pass = hash('sha512', $pass);
+
+        $sql = 'SELECT * FROM usuarios WHERE USUARIO = "' . $usuario . '" AND PASS = "' . $pass . '"';
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0){
+            $_SESSION['usuario'] = $usuario;
+            header('Location: login.php');
+        } else {
+            $errores = '<li class="list-group-item">Usuario incorrecto</li>';
+        }
+    }
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +59,12 @@
                         <input class="form-control" type="password" name="pass" id="pass" placeholder="Contraseña">
                         <label for="pass">Contraseña</label>
                     </div>
-                    <input class="btn btn-success mt-2" type="submit" value="Iniciar Sesión">
+                    <input class="btn btn-success mt-2" type="submit" value="Iniciar Sesión" name="submit">
+                    <?php if (!empty($errores)) : ?>
+                        <div class="mt-4 text-bg-danger p-2 rounded">
+                            <?php echo $errores; ?>
+                        </div>
+                    <?php endif; ?>
                 </form>
             </div>
         </div>
