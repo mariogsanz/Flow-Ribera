@@ -109,6 +109,7 @@ $salidas = $conn->query($query);
             <form id="registrar" class="mt-4" action="registrar.php" method="post">
                 <input class="btn btn-success" type="submit" value="Registrar Salida">
             </form>
+            <a href="index.php" class="btn btn-success mt-5">Volver</a>
 
             <table class="table table-striped table-borderless mt-4">
                 <?php if ($salidas->num_rows > 0) : ?>

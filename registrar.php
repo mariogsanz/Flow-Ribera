@@ -82,6 +82,7 @@ $errores = '';
                 <div>
                     <input type="submit" name="registrar" value="Registrar" class="btn btn-success mt-4">
                 </div>
+                <a href="alumno.php" class="btn btn-success mt-5">Volver</a>
                 <?php if ($errores != '') : ?>
                     <div class="text-bg-danger mt-4 p-2 rounded text-start">
                         <?php echo $errores; ?>

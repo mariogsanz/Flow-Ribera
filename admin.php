@@ -1,14 +1,80 @@
 <?php session_start();
 
-if (!isset($_SESSION['usuario'])){
+include 'config.php';
+
+if (!isset($_SESSION['usuario'])) {
     header('Location: login.php');
 } else {
-    if (isset($_POST['importar'])){
-        if (empty($_FILES['file']['name'])){
+    $insertado = false;
+
+    if (isset($_POST['importar'])) {
+        if (empty($_FILES['file']['name'])) {
             $errores = 'Introduzca un archivo';
         } else {
-            $file = file_get_contents($_FILES['file']['tmp_name']);
-            $errores = $_POST['tabla'];
+            $table = $_POST['tabla'];
+            $file = $_FILES['file'];
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+            if (empty($extension) || $extension != 'csv') {
+                $errores = 'Error al leer el archivo';
+            } else {
+                $csv = fopen($file['tmp_name'], 'r');
+                $headers = fgetcsv($csv, 0);
+                $rows = array();
+                $row_number = 0;
+
+                while ($csv_row = fgetcsv($csv, 0)) {
+                    $row_number++;
+
+                    $encoded_row = array_map('utf8_encode', $csv_row);
+
+                    if (count($encoded_row) != count($headers)) {
+                        $errores = 'Error al leer el archivo';
+                    } else {
+                        $rows[] = array_combine($headers, $encoded_row);
+                    }
+                }
+
+                if ($table === 'alumnos') {
+                    $conn->query('SET FOREIGN_KEY_CHECKS = 0');
+                    $sql = 'TRUNCATE TABLE alumnos';
+                    $conn->query($sql);
+                    $conn->query('SET FOREIGN_KEY_CHECKS = 1');
+
+                    foreach ($rows as $row) {
+                        $sql = 'INSERT INTO alumnos VALUES (' . $row['ALUMNO'] . ',"' . $row['APELLIDOS'] . '","' . $row['NOMBRE'] . '","' . $row['SEXO'] . '","' . $row['DNI'] . '","' . $row['NIE'] . '","' . $row['FECHA_NACIMIENTO'] . '","' . $row['LOCALIDAD_NACIMIENTO'] . '","' . $row['PROVINCIA_NACIMIENTO'] . '","' . $row['NOMBRE_CORRESPONDENCIA'] . '","' . $row['DOMICILIO'] . '","' . $row['LOCALIDAD'] . '","' . $row['PROVINCIA'] . '","' . $row['TELEFONO'] . '","' . $row['MOVIL'] . '","' . $row['CODIGO_POSTAL'] . '","' . $row['TUTOR1'] . '","' . $row['DNI_TUTOR1'] . '","' . $row['TUTOR2'] . '","' . $row['DNI_TUTOR2'] . '","' . $row['PAIS'] . '","' . $row['NACIONALIDAD'] . '","' . $row['EMAIL_ALUMNO'] . '","' . $row['EMAIL_TUTOR2'] . '","' . $row['EMAIL_TUTOR1'] . '","' . $row['TELEFONOTUTOR1'] . '","' . $row['TELEFONOTUTOR2'] . '","' . $row['MOVILTUTOR1'] . '","' . $row['MOVILTUTOR2'] . '","' . $row['APELLIDO1'] . '","' . $row['APELLIDO2'] . '","' . $row['TIPODOM'] . '","' . $row['NTUTOR1'] . '","' . $row['NTUTOR2'] . '","' . $row['NSS'] . '");';
+
+                        $result = $conn->query($sql);
+
+                        if (!$result) {
+                            $errores = 'Ha ocurrido un error al leer al archivo';
+                            $insertado = false;
+                            break;
+                        } else {
+                            $insertado = true;
+                        }
+                    }
+                } else if ($table === 'matriculas') {
+
+                    $conn->query('SET FOREIGN_KEY_CHECKS = 0');
+                    $sql = 'TRUNCATE TABLE matriculas';
+                    $conn->query($sql);
+                    $conn->query('SET FOREIGN_KEY_CHECKS = 1');
+
+                    foreach ($rows as $row) {
+                        $sql = 'INSERT INTO matriculas VALUES ("' . $row['ALUMNO'] . '","' . $row['APELLIDOS'] . '","' . $row['NOMBRE'] . '","' . $row['MATRICULA'] . '","' . $row['ETAPA'] . '","' . $row['ANNO'] . '","' . $row['TIPO'] . '","' . $row['ESTUDIOS'] . '","' . $row['GRUPO'] . '","' . $row['REPETIDOR'] . '","' . $row['FECHAMATRICULA'] . '","' . $row['CENTRO'] . '","' . $row['PROCEDENCIA'] . '","' . $row['ESTADOMATRICULA'] . '","' . $row['FECHARESMATRICULA'] . '","' . $row['NUM_EXP_CENTRO'] . '","' . $row['PROGRAMA_2'] . '");';
+                        $result = $conn->query($sql); 
+
+                        if (!$result) {
+                            $errores = 'Ha ocurrido un error al leer al archivo';
+                            $insertado = false;
+                            break;
+                        } else {
+                            $insertado = true;
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -52,6 +118,12 @@ if (!isset($_SESSION['usuario'])){
                         </div>
                     <?php endif; ?>
                 </form>
+                <a href="cerrar.php" class="btn btn-danger mt-5">Cerrar Sesión</a>
+                <?php if ($insertado) : ?>
+                    <div class="mt-5 text-bg-success p-2 rounded">
+                        Archivo importado correctamente
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
